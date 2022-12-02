@@ -127,6 +127,10 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      .catch(error => {
+        setError(true)
+        setMessage(error.response.data.error)
+      })
   }
 
   const delPerson = (id) => {
