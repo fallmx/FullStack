@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "Tämä on title",
-    "author": "Testi Mies",
-    "url": "http://www.sivu.fi/",
-    "likes": 576
+    "title": "Toinen title",
+    "author": "Jorma Jormanen",
+    "url": "http://www.blogi.fi/",
+    "likes": 37834
 }
