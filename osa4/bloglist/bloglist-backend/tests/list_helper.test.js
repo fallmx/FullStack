@@ -46,9 +46,9 @@ const blogs = [
     title: "Type wars",
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-    likes: 2,
+    likes: 12,
     __v: 0
-  }  
+  }
 ]
 
 
@@ -60,29 +60,67 @@ test('dummy returns one', () => {
 })
 
 describe('total likes', () => {
-  const listWithOneBlog = [
-    {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 5,
-      __v: 0
-    }
-  ]
-
   test('of empty list is zero', () => {
     const result = listHelper.totalLikes([])
     expect(result).toBe(0)
   })
 
   test('when list has only one blog equals the likes of that', () => {
+    const listWithOneBlog = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        likes: 5,
+        __v: 0
+      }
+    ]
+
     const result = listHelper.totalLikes(listWithOneBlog)
     expect(result).toBe(5)
   })
 
   test('of a bigger list is calculated right', () => {
     const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(36)
+    expect(result).toBe(46)
+  })
+})
+
+describe('favorite blog', () => {
+  test('of empty list is zero', () => {
+    const result = listHelper.favoriteBlog([])
+    expect(result).toBe(0)
+  })
+
+  test('when list has only one blog with zero likes is that blog', () => {
+    const listWithOneZeroLikeBlog = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        likes: 0,
+        __v: 0
+      }
+    ]
+
+    const resultWithOneZeroLikeBlog = listWithOneZeroLikeBlog[0]
+    delete resultWithOneZeroLikeBlog._id
+    delete resultWithOneZeroLikeBlog.url
+    delete resultWithOneZeroLikeBlog.__v
+  
+    const result = listHelper.favoriteBlog(listWithOneZeroLikeBlog)
+    expect(result).toEqual(resultWithOneZeroLikeBlog)
+  })
+
+  test('of a bigger list is calculated right', () => {
+    favorite = blogs[2]
+    delete favorite._id
+    delete favorite.url
+    delete favorite.__v
+
+    const result = listHelper.favoriteBlog(blogs)
+    expect(result).toEqual(favorite)
   })
 })
