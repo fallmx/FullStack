@@ -8,12 +8,14 @@ const initialBlogs = [
   {
     title: "Tämä on title",
     author: "Testi Mies",
-    url: "http://www.sivu.fi/"
+    url: "http://www.sivu.fi/",
+    likes: 5
   },
   {
     title: "Toinen title",
     author: "Jorma Jormanen",
-    url: "http://www.blogi.fi/"
+    url: "http://www.blogi.fi/",
+    likes: 530
   }
 ]
 
@@ -45,7 +47,8 @@ test('blogs can be added', async () => {
   const newBlog = {
     title: "This was added",
     author: "Testi Henkilö",
-    url: "http://www.site.fi/"
+    url: "http://www.site.fi/",
+    likes: 100
   }
 
   await api
@@ -59,6 +62,22 @@ test('blogs can be added', async () => {
 
   expect(response.body).toHaveLength(initialBlogs.length + 1)
   expect(titles).toContain('This was added')
+})
+
+test('adding a post without setting likes defaults to zero likes', async () => {
+  const noLikesBlog = {
+    title: "No likes on this",
+    author: "Testi Henkilö",
+    url: "http://www.site.fi/"
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(noLikesBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.likes).toBe(0)
 })
 
 afterAll(() => {

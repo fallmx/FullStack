@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const { urlencoded } = require('express')
 const Blog = require('../models/blog')
 
 blogsRouter.get('/', async (request, response) => {
@@ -7,7 +8,16 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body)
+  body = request.body
+
+  const newBlog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: "likes" in body ? body.likes : 0
+  }
+
+  const blog = new Blog(newBlog)
 
   result = await blog.save()
   response.status(201).json(result)
