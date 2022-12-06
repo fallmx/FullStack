@@ -80,6 +80,18 @@ test('adding a post without setting likes defaults to zero likes', async () => {
   expect(response.body.likes).toBe(0)
 })
 
+test('adding a post without title and url results in 400', async () => {
+  const noTitleOrUrlBlog = {
+    author: "Unknown Man",
+    likes: 3
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(noTitleOrUrlBlog)
+    .expect(400)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
