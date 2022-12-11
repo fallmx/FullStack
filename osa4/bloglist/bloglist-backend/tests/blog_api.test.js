@@ -117,6 +117,56 @@ describe('when there are initially some blogs saved', () => {
         .expect(400)
     })
   })
+
+  describe('updating blogs', () => {
+    test('succeeds with status code 200 if sending only one update parameter', async () => {
+      const response = await api.get('/api/blogs')
+      const blogToUpdate = response.body[0]
+
+      const update = {
+        likes: 1001
+      }
+
+      const updatedBlog = await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(update)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      expect(updatedBlog.body.likes).toBe(1001)
+      expect(updatedBlog.body.title).toBeDefined()
+
+      const newResponse = await api.get('/api/blogs')
+      const likes = newResponse.body.map(blog => blog.likes)
+
+      expect(likes).toContain(1001)
+    })
+
+    test('fails with status code 400 if sending non-schematic parameters', async () => {
+      const response = await api.get('/api/blogs')
+      const blogToUpdate = response.body[0]
+
+      const update = {
+        unknownField: 22
+      }
+
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(update)
+        .expect(400)
+    })
+
+    test('fails with status code 400 if id is malformatted', async () => {
+      const update = {
+        likes: 1001
+      }
+
+      await api
+        .put(`/api/blogs/notanid}`)
+        .send(update)
+        .expect(400)
+    })
+  })
 })
 
 afterAll(() => {
