@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlbnR0aSIsImlkIjoiNjM5N2M3ZjA0OGVmYmIwMTM1NjY0MmJlIiwiaWF0IjoxNjcwODkxNTI2fQ.5oiY-ELe-6QSHlq4mN7uDiM_HxKVuRTXcSNoqxU0WGI
 Content-Type: application/json
 
 {
-    "title": "Toinen title",
-    "author": "Jorma Jormanen",
+    "title": "Tämä on vettä",
+    "author": "Jorma Penttinen",
     "url": "http://www.blogi.fi/",
-    "likes": 37834
+    "likes": 1553
 }
