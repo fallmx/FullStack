@@ -1,5 +1,5 @@
 POST http://localhost:3003/api/blogs/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlbnR0aSIsImlkIjoiNjM5N2M3ZjA0OGVmYmIwMTM1NjY0MmJlIiwiaWF0IjoxNjcwODkyMTE1fQ.Fp7zLF-7K3LsPlnQmOQRUlD4LNzoUCuL3wq3lUabJs8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impvcm1hIiwiaWQiOiI2Mzk3YmQ5NjhjM2M5ZjliMWI2MDA1ZjMiLCJpYXQiOjE2NzA5NzU5MzJ9.mZQIUlGCIIM3oH03FHjk5yzFrg15J-kcetbuOzBfpFU
 Content-Type: application/json
 
 {
