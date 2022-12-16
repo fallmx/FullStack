@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useInsertionEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -15,20 +15,37 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      setUser(JSON.parse(loggedUserJSON))
+      blogService.setToken(loggedUserJSON.token)
+    }
+  }, [])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({
+      const newLogin = await loginService.login({
         username, password,
       })
 
-      blogService.setToken(user.token)
-      setUser(user)
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(newLogin)
+      )
+
+      blogService.setToken(newLogin.token)
+      setUser(newLogin)
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log(exception)
+      console.error(exception.message)
     }
+  }
+
+  const logout = () => {
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
   }
 
   if (user === null) {
@@ -36,8 +53,8 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
         <form onSubmit={handleLogin}>
-          <div>username<input value={username} onChange={({target}) => setUsername(target.value)}/></div>
-          <div>password<input value={password} onChange={({target}) => setPassword(target.value)}/></div>
+          <div>username <input value={username} onChange={({target}) => setUsername(target.value)}/></div>
+          <div>password <input value={password} onChange={({target}) => setPassword(target.value)}/></div>
           <div><button type="submit">login</button></div>
         </form>
       </div>
@@ -47,7 +64,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <p>{user.name} logged in</p>
+      <p>{user.name} logged in <button onClick={logout}>logout</button></p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
