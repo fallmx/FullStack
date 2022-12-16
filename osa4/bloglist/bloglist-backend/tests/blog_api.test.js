@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -45,6 +46,21 @@ describe('when there are initially some blogs saved', () => {
   })
 
   describe('adding blogs', () => {
+    beforeEach(async () => {
+      User.deleteMany({})
+      const testUser = {
+        username: "test",
+        name: "test",
+        password: "test"
+      }
+      await api.post('/api/users').send(testUser)
+      const creds = {
+        username: "test",
+        password: "test"
+      }
+      login = await api.post('/api/login').send(creds)
+    })
+
     test('succeeds with valid data', async () => {
       const newBlog = {
         title: "This was added",
@@ -55,6 +71,7 @@ describe('when there are initially some blogs saved', () => {
     
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${login.body.token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -75,6 +92,7 @@ describe('when there are initially some blogs saved', () => {
     
       const response = await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${login.body.token}`)
         .send(noLikesBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -90,30 +108,71 @@ describe('when there are initially some blogs saved', () => {
     
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${login.body.token}`)
         .send(noTitleOrUrlBlog)
         .expect(400)
+    })
+
+    test('without a token results in 401', async () => {
+      const newBlog = {
+        title: "This was added",
+        author: "Testi Henkilö",
+        url: "http://www.site.fi/",
+        likes: 100
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
     })
   })
 
   describe('deleting blogs', () => {
+    beforeEach(async () => {
+      User.deleteMany({})
+      const testUser = {
+        username: "test",
+        name: "test",
+        password: "test"
+      }
+      await api.post('/api/users').send(testUser)
+      const creds = {
+        username: "test",
+        password: "test"
+      }
+      login = await api.post('/api/login').send(creds)
+    })
+
     test('succeeds with status code 204 if id is valid', async () => {
-      const response = await api.get('/api/blogs')
-      const blogToDelete = response.body[0]
+      const blogToSend = {
+        title: "Tämä on title",
+        author: "Testi Mies",
+        url: "http://www.sivu.fi/",
+        likes: 5
+      }
+
+      const blogToDelete = await api
+        .post('/api/blogs')
+        .set('Authorization', `Bearer ${login.body.token}`)
+        .send(blogToSend)
 
       await api
-        .delete(`/api/blogs/${blogToDelete.id}`)
+        .delete(`/api/blogs/${blogToDelete.body.id}`)
+        .set('Authorization', `Bearer ${login.body.token}`)
         .expect(204)
 
       const newResponse = await api.get('/api/blogs')
       const ids = newResponse.body.map(blog => blog.id)
 
-      expect(newResponse.body).toHaveLength(initialBlogs.length - 1)
-      expect(ids).not.toContain(blogToDelete.id)
+      expect(newResponse.body).toHaveLength(initialBlogs.length)
+      expect(ids).not.toContain(blogToDelete.body.id)
     })
 
     test('fails with status code 400 if id is malformatted', async () => {
       await api
         .delete('/api/blogs/notanid')
+        .set('Authorization', `Bearer ${login.body.token}`)
         .expect(400)
     })
   })
