@@ -79,6 +79,28 @@ const App = () => {
     }
   }
 
+  const likeBlog = async (blogId, newLikes) => {
+    try {
+      const likeUpdate = {
+        likes: newLikes
+      }
+
+      const modified = await blogService.update(blogId, likeUpdate)
+
+      const newBlogs = blogs.reduce((prev, curr) => (
+        curr.id === blogId
+        ? prev.concat(modified)
+        : prev.concat(curr)
+      ), [])
+
+      setBlogs(newBlogs)
+    } catch (exception) {
+      console.error(exception)
+      setError(true)
+      setMessage(exception.response.data.error)
+    }
+  }
+
   if (user === null) {
     return (
       <div>
@@ -104,7 +126,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} likeBlog={likeBlog}/>
       )}
     </div>
   )

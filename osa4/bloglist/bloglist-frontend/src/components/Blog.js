@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import '../index.css'
 
-const Blog = ({blog}) => {
-  const { title, author, url, user } = blog
+const Blog = ({blog, likeBlog}) => {
+  const { id, title, author, url, likes, user } = blog
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -12,7 +12,7 @@ const Blog = ({blog}) => {
   const fullInfo = () => (
     <div>
       <div>{url}</div>
-      <div>likes 0 <button>like</button></div>
+      <div>likes {likes} <button onClick={() => likeBlog(id, likes + 1)}>like</button></div>
       <div>{user.name}</div>
     </div>
   )
