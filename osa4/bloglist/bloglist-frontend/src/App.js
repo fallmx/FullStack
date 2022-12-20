@@ -101,6 +101,18 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (blogId) => {
+    try {
+      await blogService.remove(blogId)
+
+      setBlogs(blogs.filter(b => b.id !== blogId))
+    } catch (exception) {
+      console.error(exception)
+      setError(true)
+      setMessage(exception.response.data.error)
+    }
+  }
+
   if (user === null) {
     return (
       <div>
@@ -128,7 +140,7 @@ const App = () => {
       </Togglable>
 
       {sortedBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} likeBlog={likeBlog}/>
+        <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} loggedUser={user.username}/>
       )}
     </div>
   )
