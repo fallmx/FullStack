@@ -45,4 +45,22 @@ describe('<Blog />', () => {
     expect(div).toHaveTextContent('likes 5')
     expect(div).toHaveTextContent('Jorma Mies')
   })
+
+  test('like function gets called twice if like button pressed twice', async () => {
+    const likeHandler = jest.fn()
+
+    render(
+      <Blog blog={blog} likeBlog={likeHandler} removeBlog={() => { return }} loggedUser="testimies" />
+    )
+
+    const user = userEvent.setup()
+    const viewButton = screen.getByText('view')
+    await user.click(viewButton)
+
+    const likeButton = screen.getByText('like')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(likeHandler).toBeCalledTimes(2)
+  })
 })
