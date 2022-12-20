@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -89,8 +89,8 @@ const App = () => {
 
       const newBlogs = blogs.reduce((prev, curr) => (
         curr.id === blogId
-        ? prev.concat(modified)
-        : prev.concat(curr)
+          ? prev.concat(modified)
+          : prev.concat(curr)
       ), [])
 
       setBlogs(newBlogs)
@@ -119,8 +119,8 @@ const App = () => {
         <h2>Log in to application</h2>
         <Notification message={message} error={error} setMessage={setMessage} />
         <form onSubmit={handleLogin}>
-          <div>username <input value={username} onChange={({target}) => setUsername(target.value)}/></div>
-          <div>password <input type="password" value={password} onChange={({target}) => setPassword(target.value)}/></div>
+          <div>username <input value={username} onChange={({ target }) => setUsername(target.value)}/></div>
+          <div>password <input type="password" value={password} onChange={({ target }) => setPassword(target.value)}/></div>
           <div><button type="submit">login</button></div>
         </form>
       </div>
@@ -134,7 +134,7 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={message} error={error} setMessage={setMessage} />
       <p>{user.name} logged in <button onClick={logout}>logout</button></p>
-      
+
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm createBlog={createBlog} />
       </Togglable>

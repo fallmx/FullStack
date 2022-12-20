@@ -31,7 +31,7 @@ const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
   return (
     <div className="blog">
       <div>
-        {title} {author} <button onClick={toggleVisibility}>{visible ? "hide" : "view"}</button>
+        {title} {author} <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
       </div>
       {visible && fullInfo()}
       {visible && user.username === loggedUser && removeButton()}
