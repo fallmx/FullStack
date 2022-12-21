@@ -1,12 +1,11 @@
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    const user = {
+    cy.createUser({
       name: 'Test User',
       username: 'test',
       password: 'test'
-    }
-    cy.request('POST', 'http://localhost:3003/api/users', user)
+    })
     cy.visit('http://localhost:3000')
   })
 
@@ -40,7 +39,10 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.login({ username: 'test', password: 'test' })
+      cy.login({
+        username: 'test',
+        password: 'test'
+      })
     })
 
     it('A blog can be created', function() {
@@ -64,8 +66,28 @@ describe('Blog app', function() {
 
       it('blogs can be liked', function() {
         cy.contains('view').click()
-        cy.get('#like-button').click()
+        cy.contains('like').click()
         cy.contains('likes 1')
+      })
+
+      it('blog can be removed by its owner', function() {
+        cy.contains('view').click()
+        cy.contains('remove').click()
+        cy.get('html').should('not.contain', 'Tämä on title The Author')
+      })
+
+      it('blog cannot be removed by non-owner', function() {
+        cy.createUser({
+          name: 'Pentti Mies',
+          username: 'pentti',
+          password: 'pentti'
+        })
+        cy.login({
+          username: 'pentti',
+          password: 'pentti'
+        })
+        cy.contains('view').click()
+        cy.get('.blog').should('not.contain', 'remove')
       })
     })
   })
