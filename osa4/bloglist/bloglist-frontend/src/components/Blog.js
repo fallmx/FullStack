@@ -13,7 +13,7 @@ const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
   const fullInfo = () => (
     <div>
       <div>{url}</div>
-      <div>likes {likes} <button onClick={() => likeBlog(id, likes + 1)}>like</button></div>
+      <div>likes {likes} <button id="like-button" onClick={() => likeBlog(id, likes + 1)}>like</button></div>
       <div>{user.name}</div>
     </div>
   )
