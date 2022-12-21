@@ -55,6 +55,40 @@ describe('Blog app', function() {
       cy.contains('Tämä on title The Author')
     })
 
+    it('blogs are displayed by likes in descending order', function() {
+      cy.createBlog({
+        title: 'Title with least likes',
+        author: 'The Author',
+        url: 'http://www.website.com/'
+      })
+      cy.createBlog({
+        title: 'Title with second most likes',
+        author: 'The Author',
+        url: 'http://www.website.com/'
+      })
+      cy.createBlog({
+        title: 'Title with most likes',
+        author: 'The Author',
+        url: 'http://www.website.com/'
+      })
+
+      cy.contains('Title with most likes').parent().as('most')
+      cy.get('@most').contains('view').click()
+      cy.get('@most').find('.like-button').click()
+      cy.get('@most').contains('likes 1')
+      cy.get('@most').find('.like-button').click()
+      cy.get('@most').contains('likes 2')
+
+      cy.contains('Title with second most likes').parent().as('second')
+      cy.get('@second').contains('view').click()
+      cy.get('@second').find('.like-button').click()
+      cy.get('@second').contains('likes 1')
+
+      cy.get('.blog').eq(0).should('contain', 'Title with most likes')
+      cy.get('.blog').eq(1).should('contain', 'Title with second most likes')
+      cy.get('.blog').eq(2).should('contain', 'Title with least likes')
+    })
+
     describe('and a blog exists', function() {
       beforeEach(function() {
         cy.createBlog({
