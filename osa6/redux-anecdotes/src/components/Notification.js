@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-const Notification = props => {
+const Notification = (props) => {
   const notification = props.message
 
   if (!notification) {
@@ -20,7 +20,7 @@ const Notification = props => {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     message: state.notification.message
   }
