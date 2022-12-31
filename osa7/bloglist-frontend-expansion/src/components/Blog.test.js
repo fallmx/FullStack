@@ -14,13 +14,22 @@ describe('<Blog />', () => {
     user: {
       id: '6397c7f048efbb01356642be',
       username: 'jorma',
-      name: 'Jorma Mies'
-    }
+      name: 'Jorma Mies',
+    },
   }
 
   test('renders only title and author by default', () => {
     const { container } = render(
-      <Blog blog={blog} likeBlog={() => { return }} removeBlog={() => { return }} loggedUser="testimies" />
+      <Blog
+        blog={blog}
+        likeBlog={() => {
+          return
+        }}
+        removeBlog={() => {
+          return
+        }}
+        loggedUser="testimies"
+      />
     )
 
     const div = container.querySelector('.blog')
@@ -32,7 +41,16 @@ describe('<Blog />', () => {
 
   test('renders everything when pressed show button', async () => {
     const { container } = render(
-      <Blog blog={blog} likeBlog={() => { return }} removeBlog={() => { return }} loggedUser="testimies" />
+      <Blog
+        blog={blog}
+        likeBlog={() => {
+          return
+        }}
+        removeBlog={() => {
+          return
+        }}
+        loggedUser="testimies"
+      />
     )
 
     const user = userEvent.setup()
@@ -50,7 +68,14 @@ describe('<Blog />', () => {
     const likeHandler = jest.fn()
 
     render(
-      <Blog blog={blog} likeBlog={likeHandler} removeBlog={() => { return }} loggedUser="testimies" />
+      <Blog
+        blog={blog}
+        likeBlog={likeHandler}
+        removeBlog={() => {
+          return
+        }}
+        loggedUser="testimies"
+      />
     )
 
     const user = userEvent.setup()

@@ -15,25 +15,16 @@ const Notification = ({ message, error, setMessage }) => {
   }
 
   if (error) {
-    return (
-      <div className="error notification">
-        {message}
-      </div>
-    )
-  }
-  else {
-    return (
-      <div className="success notification">
-        {message}
-      </div>
-    )
+    return <div className="error notification">{message}</div>
+  } else {
+    return <div className="success notification">{message}</div>
   }
 }
 
 Notification.propTypes = {
   message: PropTypes.string,
   error: PropTypes.bool.isRequired,
-  setMessage: PropTypes.func.isRequired
+  setMessage: PropTypes.func.isRequired,
 }
 
 export default Notification

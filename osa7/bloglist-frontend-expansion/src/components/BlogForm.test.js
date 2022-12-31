@@ -8,9 +8,7 @@ describe('<BlogForm />', () => {
   test('blog form calls callback with proper data', async () => {
     const createBlog = jest.fn()
 
-    const { container } = render(
-      <BlogForm createBlog={createBlog} />
-    )
+    const { container } = render(<BlogForm createBlog={createBlog} />)
 
     const title = container.querySelector('#form-title')
     const author = container.querySelector('#form-author')

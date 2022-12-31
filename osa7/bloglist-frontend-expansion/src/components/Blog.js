@@ -13,7 +13,12 @@ const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
   const fullInfo = () => (
     <div>
       <div>{url}</div>
-      <div>likes {likes} <button className="like-button" onClick={() => likeBlog(id, likes + 1)}>like</button></div>
+      <div>
+        likes {likes}{' '}
+        <button className="like-button" onClick={() => likeBlog(id, likes + 1)}>
+          like
+        </button>
+      </div>
       <div>{user.name}</div>
     </div>
   )
@@ -24,14 +29,13 @@ const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
     }
   }
 
-  const removeButton = () => (
-    <button onClick={promptRemoveBlog}>remove</button>
-  )
+  const removeButton = () => <button onClick={promptRemoveBlog}>remove</button>
 
   return (
     <div className="blog">
       <div>
-        {title} {author} <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
+        {title} {author}{' '}
+        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
       </div>
       {visible && fullInfo()}
       {visible && user.username === loggedUser && removeButton()}
@@ -43,7 +47,7 @@ Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   likeBlog: PropTypes.func.isRequired,
   removeBlog: PropTypes.func.isRequired,
-  loggedUser: PropTypes.string.isRequired
+  loggedUser: PropTypes.string.isRequired,
 }
 
 export default Blog
