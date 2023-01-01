@@ -1,10 +1,14 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setLikes, removeBlog } from '../reducers/blogReducer'
 import '../index.css'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
+const Blog = ({ blog, loggedUser }) => {
   const { id, title, author, url, likes, user } = blog
   const [visible, setVisible] = useState(false)
+
+  const dispatch = useDispatch()
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -15,7 +19,10 @@ const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
       <div>{url}</div>
       <div>
         likes {likes}{' '}
-        <button className="like-button" onClick={() => likeBlog(id, likes + 1)}>
+        <button
+          className="like-button"
+          onClick={() => dispatch(setLikes(id, likes + 1))}
+        >
           like
         </button>
       </div>
@@ -25,7 +32,7 @@ const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
 
   const promptRemoveBlog = () => {
     if (window.confirm(`Remove blog ${title} by ${author}`)) {
-      removeBlog(id)
+      dispatch(removeBlog(id))
     }
   }
 
@@ -45,8 +52,6 @@ const Blog = ({ blog, likeBlog, removeBlog, loggedUser }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  likeBlog: PropTypes.func.isRequired,
-  removeBlog: PropTypes.func.isRequired,
   loggedUser: PropTypes.string.isRequired,
 }
 

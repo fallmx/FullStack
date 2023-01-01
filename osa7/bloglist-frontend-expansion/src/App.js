@@ -63,40 +63,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
-  const likeBlog = async (blogId, newLikes) => {
-    return [blogId, newLikes]
-    /*try {
-      const likeUpdate = {
-        likes: newLikes,
-      }
-
-      const modified = await blogService.update(blogId, likeUpdate)
-
-      const newBlogs = blogs.reduce(
-        (prev, curr) =>
-          curr.id === blogId ? prev.concat(modified) : prev.concat(curr),
-        []
-      )
-
-      setBlogs(newBlogs)
-    } catch (exception) {
-      console.error(exception)
-      dispatch(setNotification(exception.response.data.error, true, 5))
-    }*/
-  }
-
-  const removeBlog = async (blogId) => {
-    return blogId
-    /*try {
-      await blogService.remove(blogId)
-
-      setBlogs(blogs.filter((b) => b.id !== blogId))
-    } catch (exception) {
-      console.error(exception)
-      dispatch(setNotification(exception.response.data.error, true, 5))
-    }*/
-  }
-
   if (user === null) {
     return (
       <div>
@@ -145,13 +111,7 @@ const App = () => {
       </Togglable>
 
       {sortedBlogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          likeBlog={likeBlog}
-          removeBlog={removeBlog}
-          loggedUser={user.username}
-        />
+        <Blog key={blog.id} blog={blog} loggedUser={user.username} />
       ))}
     </div>
   )
