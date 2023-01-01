@@ -1,14 +1,8 @@
-import { useEffect } from 'react'
 import '../index.css'
-import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
-const Notification = ({ message, error, setMessage }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-    return () => clearTimeout(timer)
-  })
+const Notification = () => {
+  const { message, error } = useSelector((state) => state.notification)
 
   if (message === null) {
     return null
@@ -19,12 +13,6 @@ const Notification = ({ message, error, setMessage }) => {
   } else {
     return <div className="success notification">{message}</div>
   }
-}
-
-Notification.propTypes = {
-  message: PropTypes.string,
-  error: PropTypes.bool.isRequired,
-  setMessage: PropTypes.func.isRequired,
 }
 
 export default Notification

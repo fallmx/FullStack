@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -11,8 +13,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [error, setError] = useState(false)
+
+  const dispatch = useDispatch()
 
   const blogFormRef = useRef()
 
@@ -43,12 +45,10 @@ const App = () => {
       setUser(newLogin)
       setUsername('')
       setPassword('')
-      setError(false)
-      setMessage(`logged in as ${newLogin.name}`)
+      dispatch(setNotification(`logged in as ${newLogin.name}`, false, 5))
     } catch (exception) {
       console.error(exception)
-      setError(true)
-      setMessage(exception.response.data.error)
+      dispatch(setNotification(exception.response.data.error, true, 5))
     }
   }
 
@@ -69,12 +69,16 @@ const App = () => {
 
       setBlogs(blogs.concat(newBlog))
 
-      setError(false)
-      setMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
+      dispatch(
+        setNotification(
+          `a new blog ${newBlog.title} by ${newBlog.author} added`,
+          false,
+          5
+        )
+      )
     } catch (exception) {
       console.error(exception)
-      setError(true)
-      setMessage(exception.response.data.error)
+      dispatch(setNotification(exception.response.data.error, true, 5))
     }
   }
 
@@ -95,8 +99,7 @@ const App = () => {
       setBlogs(newBlogs)
     } catch (exception) {
       console.error(exception)
-      setError(true)
-      setMessage(exception.response.data.error)
+      dispatch(setNotification(exception.response.data.error, true, 5))
     }
   }
 
@@ -107,8 +110,7 @@ const App = () => {
       setBlogs(blogs.filter((b) => b.id !== blogId))
     } catch (exception) {
       console.error(exception)
-      setError(true)
-      setMessage(exception.response.data.error)
+      dispatch(setNotification(exception.response.data.error, true, 5))
     }
   }
 
@@ -116,7 +118,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification message={message} error={error} setMessage={setMessage} />
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
             username{' '}
@@ -150,7 +152,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message} error={error} setMessage={setMessage} />
+      <Notification />
       <p>
         {user.name} logged in <button onClick={logout}>logout</button>
       </p>
