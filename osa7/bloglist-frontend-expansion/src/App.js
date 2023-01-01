@@ -1,62 +1,33 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
+import { getUserFromStorage, login, logout } from './reducers/userReducer'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
-import blogService from './services/blogs'
-import loginService from './services/login'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
 
   const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
 
   const blogFormRef = useRef()
 
   useEffect(() => {
     dispatch(initializeBlogs())
-  }, [])
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if (loggedUserJSON) {
-      const loggedUser = JSON.parse(loggedUserJSON)
-      setUser(loggedUser)
-      blogService.setToken(loggedUser.token)
-    }
+    dispatch(getUserFromStorage())
   }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    try {
-      const newLogin = await loginService.login({
-        username,
-        password,
-      })
-
-      window.localStorage.setItem('loggedUser', JSON.stringify(newLogin))
-
-      blogService.setToken(newLogin.token)
-      setUser(newLogin)
-      setUsername('')
-      setPassword('')
-      dispatch(setNotification(`logged in as ${newLogin.name}`, false, 5))
-    } catch (exception) {
-      console.error(exception)
-      dispatch(setNotification(exception.response.data.error, true, 5))
-    }
-  }
-
-  const logout = () => {
-    window.localStorage.removeItem('loggedUser')
-    setUser(null)
+    dispatch(login(username, password))
+    setUsername('')
+    setPassword('')
   }
 
   const toggleVisibility = () => {
@@ -103,7 +74,8 @@ const App = () => {
       <h2>blogs</h2>
       <Notification />
       <p>
-        {user.name} logged in <button onClick={logout}>logout</button>
+        {user.name} logged in{' '}
+        <button onClick={() => dispatch(logout())}>logout</button>
       </p>
 
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
