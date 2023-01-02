@@ -1,37 +1,17 @@
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setLikes, removeBlog } from '../reducers/blogReducer'
-import '../index.css'
 import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 
 const Blog = ({ blog, loggedUser }) => {
   const { id, title, author, url, likes, user } = blog
-  const [visible, setVisible] = useState(false)
 
   const dispatch = useDispatch()
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
-
-  const fullInfo = () => (
-    <div>
-      <div>{url}</div>
-      <div>
-        likes {likes}{' '}
-        <button
-          className="like-button"
-          onClick={() => dispatch(setLikes(id, likes + 1))}
-        >
-          like
-        </button>
-      </div>
-      <div>{user.name}</div>
-    </div>
-  )
+  const navigate = useNavigate()
 
   const promptRemoveBlog = () => {
     if (window.confirm(`Remove blog ${title} by ${author}`)) {
+      navigate('/')
       dispatch(removeBlog(id))
     }
   }
@@ -39,13 +19,22 @@ const Blog = ({ blog, loggedUser }) => {
   const removeButton = () => <button onClick={promptRemoveBlog}>remove</button>
 
   return (
-    <div className="blog">
+    <div>
       <div>
-        {title} {author}{' '}
-        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
+        <h2>{blog.title}</h2>
+        <a href={url}>{url}</a>
+        <div>
+          likes {likes}{' '}
+          <button
+            className="like-button"
+            onClick={() => dispatch(setLikes(id, likes + 1))}
+          >
+            like
+          </button>
+        </div>
+        <div>added by {user.name}</div>
       </div>
-      {visible && fullInfo()}
-      {visible && user.username === loggedUser && removeButton()}
+      {user.username === loggedUser && removeButton()}
     </div>
   )
 }

@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux'
 import { useRef } from 'react'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
-import Blog from './Blog'
+import '../index.css'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
-  const user = useSelector((state) => state.user)
   const blogs = useSelector((state) => state.blogs)
   const blogFormRef = useRef()
 
@@ -22,7 +22,11 @@ const Home = () => {
       </Togglable>
 
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} loggedUser={user.username} />
+        <div key={blog.id.concat('div')} className="blog">
+          <Link key={blog.id} to={'/blogs/'.concat(blog.id)}>
+            {blog.title}
+          </Link>
+        </div>
       ))}
     </div>
   )
