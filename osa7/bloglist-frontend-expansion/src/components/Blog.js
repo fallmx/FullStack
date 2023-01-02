@@ -21,7 +21,9 @@ const Blog = ({ blog, loggedUser }) => {
   return (
     <div>
       <div>
-        <h2>{blog.title}</h2>
+        <h2>
+          {title} {author}
+        </h2>
         <a href={url}>{url}</a>
         <div>
           likes {likes}{' '}

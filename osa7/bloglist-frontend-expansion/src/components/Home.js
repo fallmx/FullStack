@@ -24,7 +24,7 @@ const Home = () => {
       {sortedBlogs.map((blog) => (
         <div key={blog.id.concat('div')} className="blog">
           <Link key={blog.id} to={'/blogs/'.concat(blog.id)}>
-            {blog.title}
+            {blog.title} {blog.author}
           </Link>
         </div>
       ))}
