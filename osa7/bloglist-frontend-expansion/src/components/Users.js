@@ -1,20 +1,8 @@
-import { useEffect, useState } from 'react'
-//import { useSelector } from 'react-redux'
-import userService from '../services/users'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const User = () => {
-  //const blogs = useSelector((state) => state.blogs)
-  const [users, setUsers] = useState(null)
-
-  useEffect(() => {
-    userService.getAll().then((data) => {
-      setUsers(data)
-    })
-  }, [])
-
-  if (!users) {
-    return null
-  }
+  const users = useSelector((state) => state.users)
 
   return (
     <div>
@@ -29,7 +17,9 @@ const User = () => {
           </tr>
           {users.map((user) => (
             <tr key={user.id.concat('row')}>
-              <td key={user.id.concat('name')}>{user.name}</td>
+              <td key={user.id.concat('name')}>
+                <Link to={'/users/'.concat(user.id)}>{user.name}</Link>
+              </td>
               <td key={user.id.concat('count')}>{user.blogs.length}</td>
             </tr>
           ))}

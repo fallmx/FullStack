@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { getUserFromStorage, login, logout } from './reducers/userReducer'
 import Notification from './components/Notification'
 import Home from './components/Home'
 import Users from './components/Users'
-import { Routes, Route } from 'react-router-dom'
+import User from './components/User'
+import { Routes, Route, useMatch } from 'react-router-dom'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -14,9 +16,16 @@ const App = () => {
   const dispatch = useDispatch()
 
   const user = useSelector((state) => state.user)
+  const users = useSelector((state) => state.users)
+
+  const match = useMatch('/users/:id')
+  const selectedUser = match
+    ? users.find((u) => u.id === match.params.id)
+    : null
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
     dispatch(getUserFromStorage())
   }, [])
 
@@ -72,6 +81,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User user={selectedUser} />} />
       </Routes>
     </div>
   )
