@@ -22,6 +22,16 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+
+  blog.comments = blog.comments.concat(request.body.comment)
+
+  await blog.save()
+
+  response.status(201).json(request.body)
+})
+
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const user = request.user
   const blogToDelete = await Blog.findById(request.params.id)

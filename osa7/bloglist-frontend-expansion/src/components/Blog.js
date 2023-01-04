@@ -2,9 +2,10 @@ import { useDispatch } from 'react-redux'
 import { setLikes, removeBlog } from '../reducers/blogReducer'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
+import Comments from './Comments'
 
 const Blog = ({ blog, loggedUser }) => {
-  const { id, title, author, url, likes, user } = blog
+  const { id, title, author, url, likes, comments, user } = blog
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -37,6 +38,8 @@ const Blog = ({ blog, loggedUser }) => {
         <div>added by {user.name}</div>
       </div>
       {user.username === loggedUser && removeButton()}
+      <h3>comments</h3>
+      <Comments comments={comments}/>
     </div>
   )
 }
