@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import { getUserFromStorage, login, logout } from './reducers/userReducer'
+import { getUserFromStorage, login } from './reducers/userReducer'
 import Notification from './components/Notification'
 import Home from './components/Home'
 import Users from './components/Users'
 import User from './components/User'
 import Blog from './components/Blog'
+import Navigation from './components/Navigation'
 import { Routes, Route, useMatch } from 'react-router-dom'
 
 const App = () => {
@@ -78,13 +79,9 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <Navigation />
+      <h2>blog app</h2>
       <Notification />
-      <p>
-        {user.name} logged in{' '}
-        <button onClick={() => dispatch(logout())}>logout</button>
-      </p>
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users />} />
