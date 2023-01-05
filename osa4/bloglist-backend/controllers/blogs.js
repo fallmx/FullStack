@@ -27,9 +27,11 @@ blogsRouter.post('/:id/comments', async (request, response) => {
 
   blog.comments = blog.comments.concat(request.body.comment)
 
-  await blog.save()
+  const updatedBlog = await blog.save()
 
-  response.status(201).json(request.body)
+  await updatedBlog.populate('user', { username: 1, name: 1, id: 1 })
+
+  response.status(201).json(updatedBlog)
 })
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {

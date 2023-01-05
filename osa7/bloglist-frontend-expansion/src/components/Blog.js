@@ -1,11 +1,17 @@
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setLikes, removeBlog } from '../reducers/blogReducer'
+import { setLikes, removeBlog, addComment } from '../reducers/blogReducer'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import Comments from './Comments'
 
 const Blog = ({ blog, loggedUser }) => {
+  if (!blog) {
+    return null
+  }
+
   const { id, title, author, url, likes, comments, user } = blog
+  const [comment, setComment] = useState('')
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -15,6 +21,13 @@ const Blog = ({ blog, loggedUser }) => {
       navigate('/')
       dispatch(removeBlog(id))
     }
+  }
+
+  const handleAddComment = (event) => {
+    event.preventDefault()
+    dispatch(addComment(id, comment))
+
+    setComment('')
   }
 
   const removeButton = () => <button onClick={promptRemoveBlog}>remove</button>
@@ -39,7 +52,14 @@ const Blog = ({ blog, loggedUser }) => {
       </div>
       {user.username === loggedUser && removeButton()}
       <h3>comments</h3>
-      <Comments comments={comments}/>
+      <form onSubmit={handleAddComment}>
+        <input
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button type="submit">add comment</button>
+      </form>
+      <Comments comments={comments} />
     </div>
   )
 }

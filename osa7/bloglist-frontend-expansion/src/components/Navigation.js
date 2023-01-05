@@ -7,14 +7,18 @@ const Navigation = () => {
   const user = useSelector((state) => state.user)
 
   const padding = {
-    padding: 5
+    padding: 5,
   }
 
   return (
     <div className="navigation">
-      <Link to="/" style={padding}>blogs</Link>
-      <Link to="/users" style={padding}>users</Link>
-      {' '}{user.name} logged in{' '}
+      <Link to="/" style={padding}>
+        blogs
+      </Link>
+      <Link to="/users" style={padding}>
+        users
+      </Link>{' '}
+      {user.name} logged in{' '}
       <button onClick={() => dispatch(logout())}>logout</button>
     </div>
   )

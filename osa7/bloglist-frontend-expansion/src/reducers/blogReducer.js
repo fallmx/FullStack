@@ -54,7 +54,7 @@ export const setLikes = (blogId, likes) => {
   return async (dispatch) => {
     try {
       const likeUpdate = {
-        likes: likes,
+        likes,
       }
 
       const modified = await blogService.update(blogId, likeUpdate)
@@ -73,6 +73,23 @@ export const removeBlog = (blogId) => {
       await blogService.remove(blogId)
 
       dispatch(deleteBlog({ id: blogId }))
+    } catch (exception) {
+      console.error(exception)
+      dispatch(setNotification(exception.response.data.error, true, 5))
+    }
+  }
+}
+
+export const addComment = (blogId, comment) => {
+  return async (dispatch) => {
+    try {
+      const commentObject = {
+        comment,
+      }
+
+      const modified = await blogService.createComment(blogId, commentObject)
+
+      dispatch(modifyBlog({ id: blogId, newObject: modified }))
     } catch (exception) {
       console.error(exception)
       dispatch(setNotification(exception.response.data.error, true, 5))
