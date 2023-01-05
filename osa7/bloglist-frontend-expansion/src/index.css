@@ -27,3 +27,16 @@
   background-color: lightgray;
   padding: 5px;
 }
+
+.login-form {
+  max-width: 500px;
+  margin: auto;
+}
+
+Button {
+  margin: 10px 10px 10px 0px;
+}
+
+.blog-form {
+  max-width: 500px;
+}

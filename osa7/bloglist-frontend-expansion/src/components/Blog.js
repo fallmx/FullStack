@@ -4,6 +4,7 @@ import { setLikes, removeBlog, addComment } from '../reducers/blogReducer'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import Comments from './Comments'
+import { Button } from 'react-bootstrap'
 
 const Blog = ({ blog, loggedUser }) => {
   if (!blog) {
@@ -30,7 +31,7 @@ const Blog = ({ blog, loggedUser }) => {
     setComment('')
   }
 
-  const removeButton = () => <button onClick={promptRemoveBlog}>remove</button>
+  const removeButton = () => <Button onClick={promptRemoveBlog}>remove</Button>
 
   return (
     <div>
@@ -41,12 +42,12 @@ const Blog = ({ blog, loggedUser }) => {
         <a href={url}>{url}</a>
         <div>
           likes {likes}{' '}
-          <button
+          <Button
             className="like-button"
             onClick={() => dispatch(setLikes(id, likes + 1))}
           >
             like
-          </button>
+          </Button>
         </div>
         <div>added by {user.name}</div>
       </div>
@@ -57,7 +58,7 @@ const Blog = ({ blog, loggedUser }) => {
           value={comment}
           onChange={({ target }) => setComment(target.value)}
         />
-        <button type="submit">add comment</button>
+        <Button type="submit">add comment</Button>
       </form>
       <Comments comments={comments} />
     </div>

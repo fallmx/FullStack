@@ -4,6 +4,7 @@ import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 import '../index.css'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const Home = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -21,13 +22,19 @@ const Home = () => {
         <BlogForm toggleVisibility={toggleVisibility} />
       </Togglable>
 
-      {sortedBlogs.map((blog) => (
-        <div key={blog.id.concat('div')} className="blog">
-          <Link key={blog.id} to={'/blogs/'.concat(blog.id)}>
-            {blog.title} {blog.author}
-          </Link>
-        </div>
-      ))}
+      <Table striped>
+        <tbody>
+          {sortedBlogs.map((blog) => (
+            <tr key={blog.id}>
+              <td>
+                <Link to={'/blogs/'.concat(blog.id)}>
+                  {blog.title} {blog.author}
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   )
 }

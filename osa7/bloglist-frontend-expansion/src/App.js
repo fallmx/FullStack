@@ -10,6 +10,8 @@ import User from './components/User'
 import Blog from './components/Blog'
 import Navigation from './components/Navigation'
 import { Routes, Route, useMatch } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
+import './index.css'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -46,41 +48,43 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <div className="container">
+        <div className="login-form">
         <h2>Log in to application</h2>
         <Notification />
-        <form onSubmit={handleLogin}>
-          <div>
-            username{' '}
-            <input
+        <Form onSubmit={handleLogin}>
+          <Form.Group>
+            <Form.Label>username:</Form.Label>
+            <Form.Control
               id="login-username"
+              type="text"
+              name="username"
               value={username}
               onChange={({ target }) => setUsername(target.value)}
             />
-          </div>
-          <div>
-            password{' '}
-            <input
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>password:</Form.Label>
+            <Form.Control
               id="login-password"
               type="password"
+              name="password"
               value={password}
               onChange={({ target }) => setPassword(target.value)}
             />
-          </div>
-          <div>
-            <button id="login-button" type="submit">
-              login
-            </button>
-          </div>
-        </form>
+          </Form.Group>
+          <Button variant="primary" id="login-button" type="submit">
+            login
+          </Button>
+        </Form>
+        </div>
       </div>
     )
   }
 
   return (
-    <div>
+    <div className="container">
       <Navigation />
-      <h2>blog app</h2>
       <Notification />
       <Routes>
         <Route path="/" element={<Home />} />
